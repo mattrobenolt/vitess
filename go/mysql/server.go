@@ -197,6 +197,8 @@ type Listener struct {
 	// handled further by the MySQL handler. An non-nil error will stop
 	// processing the connection by the MySQL handler.
 	PreHandleFunc func(context.Context, net.Conn, uint32) (net.Conn, error)
+
+	NextConnectionID func(*uint32)
 }
 
 // NewFromListener creates a new mysql listener from an existing net.Listener
@@ -258,10 +260,11 @@ func NewListenerWithConfig(cfg ListenerConfig) (*Listener, error) {
 		handler:            cfg.Handler,
 		listener:           l,
 		ServerVersion:      servenv.AppVersion.MySQLVersion(),
-		connectionID:       1,
+		connectionID:       0,
 		connReadTimeout:    cfg.ConnReadTimeout,
 		connWriteTimeout:   cfg.ConnWriteTimeout,
 		connReadBufferSize: cfg.ConnReadBufferSize,
+		NextConnectionID:   func(id *uint32) { *id++ },
 	}, nil
 }
 
@@ -284,8 +287,8 @@ func (l *Listener) Accept() {
 
 		acceptTime := time.Now()
 
+		l.NextConnectionID(&l.connectionID)
 		connectionID := l.connectionID
-		l.connectionID++
 
 		connCount.Add(1)
 		connAccept.Add(1)
