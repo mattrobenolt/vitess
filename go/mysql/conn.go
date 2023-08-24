@@ -239,6 +239,13 @@ func newConn(conn net.Conn) *Conn {
 // the server is shutting down, and has the ability to control buffer
 // size for reads.
 func newServerConn(conn net.Conn, listener *Listener) *Conn {
+	if listener.ConnKeepAlivePeriod > 0 {
+		if tcpConn, ok := conn.(*net.TCPConn); ok {
+			tcpConn.SetKeepAlive(true)
+			tcpConn.SetKeepAlivePeriod(listener.ConnKeepAlivePeriod)
+		}
+	}
+
 	c := &Conn{
 		conn:        conn,
 		listener:    listener,
@@ -1150,7 +1157,6 @@ func (c *Conn) handleComPrepare(handler Handler, data []byte) (kontinue bool) {
 	c.PrepareData[c.StatementID] = prepare
 
 	fld, err := handler.ComPrepare(c, queries[0], bindVars)
-
 	if err != nil {
 		return c.writeErrorPacketFromErrorAndLog(err)
 	}

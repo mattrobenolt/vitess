@@ -199,6 +199,8 @@ type Listener struct {
 	PreHandleFunc func(context.Context, net.Conn, uint32) (net.Conn, error)
 
 	NextConnectionID func(*uint32)
+
+	ConnKeepAlivePeriod time.Duration
 }
 
 // NewFromListener creates a new mysql listener from an existing net.Listener
