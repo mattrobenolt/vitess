@@ -208,6 +208,8 @@ type Listener struct {
 	// NextConnectionID is called on each new connection with the previous
 	// connection ID. Default behavior is to just increment.
 	NextConnectionID func(uint32) uint32
+
+	ConnKeepAlivePeriod time.Duration
 }
 
 // NewFromListener creates a new mysql listener from an existing net.Listener

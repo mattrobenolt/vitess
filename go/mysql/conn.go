@@ -247,6 +247,13 @@ func newConn(conn net.Conn) *Conn {
 // the server is shutting down, and has the ability to control buffer
 // size for reads.
 func newServerConn(conn net.Conn, listener *Listener) *Conn {
+	if listener.ConnKeepAlivePeriod > 0 {
+		if tcpConn, ok := conn.(*net.TCPConn); ok {
+			tcpConn.SetKeepAlive(true)
+			tcpConn.SetKeepAlivePeriod(listener.ConnKeepAlivePeriod)
+		}
+	}
+
 	c := &Conn{
 		conn:        conn,
 		listener:    listener,
