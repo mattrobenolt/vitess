@@ -49,7 +49,8 @@ func TestReadTopologyInstanceBufferable(t *testing.T) {
 	}()
 
 	// Change the args such that they match how we would invoke VTOrc
-	os.Args = []string{"vtorc",
+	os.Args = []string{
+		"vtorc",
 		"--topo_global_server_address", clusterInfo.ClusterInstance.VtctlProcess.TopoGlobalAddress,
 		"--topo_implementation", clusterInfo.ClusterInstance.VtctlProcess.TopoImplementation,
 		"--topo_global_root", clusterInfo.ClusterInstance.VtctlProcess.TopoGlobalRoot,
@@ -110,7 +111,8 @@ func TestReadTopologyInstanceBufferable(t *testing.T) {
 	// After this we restart the replication and enable the recoveries again.
 	err = logic.DisableRecovery()
 	require.NoError(t, err)
-	err = utils.RunSQLs(t, []string{`STOP REPLICA;`,
+	err = utils.RunSQLs(t, []string{
+		`STOP REPLICA;`,
 		`SET GTID_NEXT="12345678-1234-1234-1234-123456789012:1";`,
 		`BEGIN;`, `COMMIT;`,
 		`SET GTID_NEXT="AUTOMATIC";`,

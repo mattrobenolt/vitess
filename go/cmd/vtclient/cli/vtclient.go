@@ -78,9 +78,7 @@ vtclient --server vtgate:15991 --target '@primary' --bind_variables '[ 12345, 1,
 	}
 )
 
-var (
-	seqChan = make(chan int, 10)
-)
+var seqChan = make(chan int, 10)
 
 func init() {
 	servenv.MoveFlagsToCobraCommand(Main)

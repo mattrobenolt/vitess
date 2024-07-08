@@ -21,7 +21,7 @@ import (
 )
 
 func TestToKebabCase(t *testing.T) {
-	var kebabCaseTest = []struct{ input, output string }{
+	kebabCaseTest := []struct{ input, output string }{
 		{"Camel", "camel"},
 		{"Camel", "camel"},
 		{"CamelCase", "camel-case"},

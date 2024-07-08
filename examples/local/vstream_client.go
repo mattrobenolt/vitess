@@ -52,14 +52,16 @@ func main() {
 				Keyspace: "customer",
 				Shard:    "80-",
 				Gtid:     "",
-			}}}
+			}},
+		}
 	} else {
 		vgtid = &binlogdatapb.VGtid{
 			ShardGtids: []*binlogdatapb.ShardGtid{{
 				Keyspace: "commerce",
 				Shard:    "0",
 				Gtid:     "",
-			}}}
+			}},
+		}
 	}
 	filter := &binlogdatapb.Filter{
 		Rules: []*binlogdatapb.Rule{{
@@ -73,8 +75,8 @@ func main() {
 	}
 	defer conn.Close()
 	flags := &vtgatepb.VStreamFlags{
-		//MinimizeSkew:      false,
-		//HeartbeatInterval: 60, //seconds
+		// MinimizeSkew:      false,
+		// HeartbeatInterval: 60, //seconds
 	}
 	reader, err := conn.VStream(ctx, topodatapb.TabletType_PRIMARY, vgtid, filter, flags)
 	for {

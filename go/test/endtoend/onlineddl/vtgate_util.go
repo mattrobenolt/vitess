@@ -39,9 +39,7 @@ const (
 	ThrottledAppsTimeout = 60 * time.Second
 )
 
-var (
-	testsStartupTime time.Time
-)
+var testsStartupTime time.Time
 
 func init() {
 	testsStartupTime = time.Now()
@@ -342,7 +340,6 @@ func UnthrottleAllMigrations(t *testing.T, vtParams *mysql.ConnParams) {
 
 // CheckThrottledApps checks for existence or non-existence of an app in the throttled apps list
 func CheckThrottledApps(t *testing.T, vtParams *mysql.ConnParams, throttlerApp throttlerapp.Name, expectFind bool) {
-
 	ctx, cancel := context.WithTimeout(context.Background(), ThrottledAppsTimeout)
 	defer cancel()
 

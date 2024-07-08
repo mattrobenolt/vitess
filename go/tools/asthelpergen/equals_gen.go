@@ -292,7 +292,8 @@ func (e *equalsGen) sliceMethod(t types.Type, slice *types.Slice, spi generatorS
 		}
 	*/
 
-	stmts := []jen.Code{jen.If(jen.Id("len(a) != len(b)")).Block(jen.Return(jen.False())),
+	stmts := []jen.Code{
+		jen.If(jen.Id("len(a) != len(b)")).Block(jen.Return(jen.False())),
 		jen.For(jen.Id("i := 0; i < len(a); i++")).Block(
 			jen.If(compareValueType(slice.Elem(), jen.Id("a[i]"), jen.Id("b[i]"), false, spi)).Block(jen.Return(jen.False()))),
 		jen.Return(jen.True()),

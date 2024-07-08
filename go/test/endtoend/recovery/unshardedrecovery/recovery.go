@@ -55,7 +55,8 @@ var (
 		"--degraded_threshold", "5s",
 		"--lock_tables_timeout", "5s",
 		"--watch_replication_stream",
-		"--serving_state_grace_period", "1s"}
+		"--serving_state_grace_period", "1s",
+	}
 	recoveryKS1  = "recovery_ks1"
 	recoveryKS2  = "recovery_ks2"
 	vtInsertTest = `create table vt_insert_test (
@@ -104,7 +105,7 @@ func TestMainImpl(m *testing.M) {
 			return 1, err
 		}
 		newInitDBFile = path.Join(localCluster.TmpDirectory, "init_db_with_passwords.sql")
-		os.WriteFile(newInitDBFile, []byte(sql), 0666)
+		os.WriteFile(newInitDBFile, []byte(sql), 0o666)
 
 		extraArgs := []string{"--db-credentials-file", dbCredentialFile}
 		commonTabletArg = append(commonTabletArg, "--db-credentials-file", dbCredentialFile)
@@ -179,7 +180,6 @@ func TestMainImpl(m *testing.M) {
 	} else {
 		os.Exit(exitCode)
 	}
-
 }
 
 // TestRecoveryImpl does following
@@ -290,7 +290,7 @@ func TestRecoveryImpl(t *testing.T) {
 	// only one row from first backup
 	cluster.VerifyRowsInTablet(t, replica3, keyspaceName, 1)
 
-	//verify that restored replica has value = test1
+	// verify that restored replica has value = test1
 	qr, err = replica3.VttabletProcess.QueryTablet("select msg from vt_insert_test where id = 1", keyspaceName, true)
 	assert.NoError(t, err)
 	assert.Equal(t, "test1", qr.Rows[0][0].ToString())

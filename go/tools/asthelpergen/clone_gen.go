@@ -127,7 +127,6 @@ func (c *cloneGen) copySliceElement(t types.Type, elType types.Type, spi generat
 }
 
 func (c *cloneGen) interfaceMethod(t types.Type, iface *types.Interface, spi generatorSPI) error {
-
 	// func CloneAST(in AST) AST {
 	//	if in == nil {
 	//	return nil

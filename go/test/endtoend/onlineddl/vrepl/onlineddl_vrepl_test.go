@@ -166,7 +166,7 @@ func TestMain(m *testing.M) {
 		defer clusterInstance.Teardown()
 
 		if _, err := os.Stat(schemaChangeDirectory); os.IsNotExist(err) {
-			_ = os.Mkdir(schemaChangeDirectory, 0700)
+			_ = os.Mkdir(schemaChangeDirectory, 0o700)
 		}
 
 		clusterInstance.VtctldExtraArgs = []string{
@@ -216,7 +216,6 @@ func TestMain(m *testing.M) {
 	} else {
 		os.Exit(exitcode)
 	}
-
 }
 
 func TestSchemaChange(t *testing.T) {
@@ -507,7 +506,6 @@ func TestSchemaChange(t *testing.T) {
 		currentPrimaryTablet := shards[0].Vttablets[currentPrimaryTabletIndex]
 		reparentTablet := shards[0].Vttablets[1-currentPrimaryTabletIndex]
 		t.Run(fmt.Sprintf("PlannedReparentShard via throttling %d/2", (currentPrimaryTabletIndex+1)), func(t *testing.T) {
-
 			insertRows(t, 2)
 			_, err = throttler.ThrottleAppAndWaitUntilTabletsConfirm(t, clusterInstance, throttlerapp.OnlineDDLName)
 			assert.NoError(t, err)
@@ -605,7 +603,6 @@ func TestSchemaChange(t *testing.T) {
 		reparentTablet := shards[0].Vttablets[1-currentPrimaryTabletIndex]
 
 		t.Run(fmt.Sprintf("PlannedReparentShard via postponed %d/2", (currentPrimaryTabletIndex+1)), func(t *testing.T) {
-
 			insertRows(t, 2)
 
 			uuid := testOnlineDDLStatement(t, alterTableTrivialStatement, "vitess --postpone-completion", providedUUID, providedMigrationContext, "vtgate", "test_val", "", true)
@@ -901,7 +898,7 @@ func testMigrationRowCount(t *testing.T, uuid string) {
 
 func testWithInitialSchema(t *testing.T) {
 	// Create 4 tables
-	var sqlQuery = "" //nolint
+	sqlQuery := "" //nolint
 	for i := 0; i < totalTableCount; i++ {
 		sqlQuery = fmt.Sprintf(createTable, fmt.Sprintf("vt_onlineddl_test_%02d", i))
 		err := clusterInstance.VtctldClientProcess.ApplySchema(keyspaceName, sqlQuery)

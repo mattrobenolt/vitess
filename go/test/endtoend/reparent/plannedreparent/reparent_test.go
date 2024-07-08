@@ -132,7 +132,6 @@ func TestReparentReplicaOffline(t *testing.T) {
 		assert.Contains(t, out, "rpc error: code = DeadlineExceeded desc")
 		utils.CheckPrimaryTablet(t, clusterInstance, tablets[0])
 	}
-
 }
 
 func TestReparentAvoid(t *testing.T) {
@@ -218,7 +217,7 @@ func reparentFromOutside(t *testing.T, clusterInstance *cluster.LocalProcessClus
 		demoteCommands := []string{"SET GLOBAL read_only = ON", "FLUSH TABLES WITH READ LOCK", "UNLOCK TABLES"}
 		utils.RunSQLs(ctx, t, demoteCommands, tablets[0])
 
-		//Get the position of the old primary and wait for the new one to catch up.
+		// Get the position of the old primary and wait for the new one to catch up.
 		err := utils.WaitForReplicationPosition(t, tablets[0], tablets[1])
 		require.NoError(t, err)
 	}

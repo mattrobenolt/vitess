@@ -47,7 +47,6 @@ func TestMain(m *testing.M) {
 	flag.Parse()
 
 	exitcode, err := func() (int, error) {
-
 		topology := new(vttestpb.VTTestTopology)
 		topology.Keyspaces = []*vttestpb.Keyspace{
 			{

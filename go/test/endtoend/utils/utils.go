@@ -216,7 +216,6 @@ func BinaryIsAtLeastAtVersion(majorVersion int, binary string) bool {
 		return false
 	}
 	return version >= majorVersion
-
 }
 
 // AssertMatchesWithTimeout asserts that the given query produces the expected result.
@@ -239,7 +238,6 @@ func AssertMatchesWithTimeout(t *testing.T, conn *mysql.Conn, query, expected st
 			diff = cmp.Diff(expected,
 				fmt.Sprintf("%v", qr.Rows))
 		}
-
 	}
 }
 
@@ -421,7 +419,7 @@ func TimeoutAction(t *testing.T, timeout time.Duration, errMsg string, action fu
 func RunSQLs(t *testing.T, sqls []string, tablet *cluster.Vttablet, db string) error {
 	// Get Connection
 	tabletParams := getMysqlConnParam(tablet, db)
-	var timeoutDuration = time.Duration(5 * len(sqls))
+	timeoutDuration := time.Duration(5 * len(sqls))
 	ctx, cancel := context.WithTimeout(context.Background(), timeoutDuration*time.Second)
 	defer cancel()
 	conn, err := mysql.Connect(ctx, &tabletParams)

@@ -37,13 +37,9 @@ const (
 
 type mysqlVersions []mysqlVersion
 
-var (
-	defaultMySQLVersions = []mysqlVersion{defaultMySQLVersion}
-)
+var defaultMySQLVersions = []mysqlVersion{defaultMySQLVersion}
 
-var (
-	unitTestDatabases = []mysqlVersion{mysql57, mysql80}
-)
+var unitTestDatabases = []mysqlVersion{mysql57, mysql80}
 
 const (
 	workflowConfigDir = "../.github/workflows"

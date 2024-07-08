@@ -48,7 +48,8 @@ var (
 		"--lock_tables_timeout", "5s",
 		"--watch_replication_stream",
 		"--enable_replication_reporter",
-		"--serving_state_grace_period", "1s"}
+		"--serving_state_grace_period", "1s",
+	}
 )
 
 func TestMain(m *testing.M) {
@@ -95,7 +96,7 @@ func TestMain(m *testing.M) {
 			return 1, err
 		}
 		newInitDBFile = path.Join(localCluster.TmpDirectory, "init_db_with_passwords.sql")
-		err = os.WriteFile(newInitDBFile, []byte(sql), 0666)
+		err = os.WriteFile(newInitDBFile, []byte(sql), 0o666)
 		if err != nil {
 			return 1, err
 		}
@@ -154,5 +155,4 @@ func TestMain(m *testing.M) {
 	} else {
 		os.Exit(exitCode)
 	}
-
 }

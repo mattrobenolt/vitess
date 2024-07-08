@@ -410,7 +410,7 @@ func TestERSForInitialization(t *testing.T) {
 		require.NoError(t, err, out)
 	}
 
-	//Start MySql
+	// Start MySql
 	var mysqlCtlProcessList []*exec.Cmd
 	for _, shard := range clusterInstance.Keyspaces[0].Shards {
 		for _, tablet := range shard.Vttablets {

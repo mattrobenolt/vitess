@@ -35,6 +35,7 @@ type semaphore struct {
 func (s *semaphore) wait() {
 	sync_runtime_Semacquire(&s.f)
 }
+
 func (s *semaphore) notify(handoff bool) {
 	sync_runtime_Semrelease(&s.f, handoff, 0)
 }

@@ -115,7 +115,7 @@ func (fs *FS) WriteContext(ctx context.Context, path string, data []byte) (err e
 		}
 		return err
 	}
-	return os.WriteFile(path, []byte(data), 0666)
+	return os.WriteFile(path, []byte(data), 0o666)
 }
 
 var (

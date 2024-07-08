@@ -228,7 +228,6 @@ func commandDeleteKeyspace(cmd *cobra.Command, args []string) error {
 		Recursive: deleteKeyspaceOptions.Recursive,
 		Force:     deleteKeyspaceOptions.Force,
 	})
-
 	if err != nil {
 		return fmt.Errorf("DeleteKeyspace(%v) error: %w; please check the topo", ks, err)
 	}
@@ -245,7 +244,6 @@ func commandFindAllShardsInKeyspace(cmd *cobra.Command, args []string) error {
 	resp, err := client.FindAllShardsInKeyspace(commandCtx, &vtctldatapb.FindAllShardsInKeyspaceRequest{
 		Keyspace: ks,
 	})
-
 	if err != nil {
 		return err
 	}
@@ -315,7 +313,6 @@ func commandRemoveKeyspaceCell(cmd *cobra.Command, args []string) error {
 		Force:     removeKeyspaceCellOptions.Force,
 		Recursive: removeKeyspaceCellOptions.Recursive,
 	})
-
 	if err != nil {
 		return err
 	}
@@ -368,7 +365,6 @@ func commandValidateSchemaKeyspace(cmd *cobra.Command, args []string) error {
 		SkipNoPrimary:  validateSchemaKeyspaceOptions.SkipNoPrimary,
 		IncludeViews:   validateSchemaKeyspaceOptions.IncludeViews,
 	})
-
 	if err != nil {
 		return err
 	}
@@ -389,7 +385,6 @@ func commandValidateVersionKeyspace(cmd *cobra.Command, args []string) error {
 	resp, err := client.ValidateVersionKeyspace(commandCtx, &vtctldatapb.ValidateVersionKeyspaceRequest{
 		Keyspace: ks,
 	})
-
 	if err != nil {
 		return err
 	}

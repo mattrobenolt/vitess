@@ -191,7 +191,6 @@ func deleteRecord(t *testing.T, dbo *sql.DB) {
 
 	data := selectWhere(t, dbo, "id = ?", testingID)
 	assert.Equal(t, 0, len(data))
-
 }
 
 // updateRecord test update operation corresponds to the testingID.
@@ -211,7 +210,6 @@ func updateRecord(t *testing.T, dbo *sql.DB) {
 	// validate value of msg column in data
 	assert.Equal(t, updateData, data[0].Data)
 	assert.Equal(t, updateTextCol, data[0].TextCol)
-
 }
 
 // reconnectAndTest creates new connection with database and validate.
@@ -221,7 +219,6 @@ func reconnectAndTest(t *testing.T) {
 	defer dbo.Close()
 	data := selectWhere(t, dbo, "id = ?", testingID)
 	assert.Equal(t, 0, len(data))
-
 }
 
 // TestColumnParameter query database using column

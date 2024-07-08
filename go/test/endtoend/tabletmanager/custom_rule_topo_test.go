@@ -32,7 +32,6 @@ import (
 )
 
 func TestTopoCustomRule(t *testing.T) {
-
 	defer cluster.PanicHandler(t)
 	ctx := context.Background()
 	conn, err := mysql.Connect(ctx, &primaryTabletParams)
@@ -51,7 +50,7 @@ func TestTopoCustomRule(t *testing.T) {
 	topoCustomRuleFile := "/tmp/rules.json"
 	topoCustomRulePath := "/keyspaces/ks/configs/CustomRules"
 	data := []byte("[]\n")
-	err = os.WriteFile(topoCustomRuleFile, data, 0777)
+	err = os.WriteFile(topoCustomRuleFile, data, 0o777)
 	require.NoError(t, err)
 
 	// Copy config file into topo.
@@ -98,7 +97,7 @@ func TestTopoCustomRule(t *testing.T) {
 		"TableNames" : ["t1"],
 		"Query" : "(select)|(SELECT)"
 	  }]`)
-	err = os.WriteFile(topoCustomRuleFile, data, 0777)
+	err = os.WriteFile(topoCustomRuleFile, data, 0o777)
 	require.NoError(t, err)
 
 	err = clusterInstance.VtctlclientProcess.ExecuteCommand("TopoCp", "--", "--to_topo", topoCustomRuleFile, topoCustomRulePath)

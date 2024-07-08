@@ -31,15 +31,14 @@ import (
 	"vitess.io/vitess/go/test/endtoend/cluster"
 )
 
-var (
-	testKeyspace = &cluster.Keyspace{
-		Name: "kstest",
-		SchemaSQL: `create table vt_user (
+var testKeyspace = &cluster.Keyspace{
+	Name: "kstest",
+	SchemaSQL: `create table vt_user (
 id bigint,
 name varchar(64),
 primary key (id)
 ) Engine=InnoDB`,
-		VSchema: `{
+	VSchema: `{
  "sharded": true,
  "vindexes": {
    "hash_index": {
@@ -57,8 +56,7 @@ primary key (id)
    }
  }
 }`,
-	}
-)
+}
 
 func TestAddKeyspace(t *testing.T) {
 	defer cluster.PanicHandler(t)

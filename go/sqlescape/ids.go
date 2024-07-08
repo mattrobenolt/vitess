@@ -59,7 +59,6 @@ func UnescapeID(in string) (string, error) {
 
 	if l == 0 || in == "``" {
 		return "", fmt.Errorf("UnescapeID err: invalid input identifier '%s'", in)
-
 	}
 
 	if l == 1 {

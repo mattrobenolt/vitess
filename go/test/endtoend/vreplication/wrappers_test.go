@@ -155,6 +155,7 @@ func (vmt *VtctlMoveTables) exec(action string) {
 		vmt.tables, action, vmt.tabletTypes, vmt.sourceShards, "", options)
 	require.NoError(vmt.vc.t, err)
 }
+
 func (vmt *VtctlMoveTables) SwitchReads() {
 	// TODO implement me
 	panic("implement me")

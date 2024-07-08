@@ -61,7 +61,7 @@ func newBinlogServer(hostname string, port int) (*binLogServer, error) {
 	dataDir := path.Join(os.Getenv("VTDATAROOT"), fmt.Sprintf("%s_%d", binlogDataDir, port))
 	fmt.Println(dataDir)
 	if _, err := os.Stat(dataDir); os.IsNotExist(err) {
-		err := os.Mkdir(dataDir, 0700)
+		err := os.Mkdir(dataDir, 0o700)
 		if err != nil {
 			log.Error(err)
 			return nil, err

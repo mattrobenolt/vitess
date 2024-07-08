@@ -112,8 +112,8 @@ func tstWorkflowAction(t *testing.T, action, tabletTypes, cells string) error {
 // vtctldclient. If you need to use the legacy vtctlclient, use
 // tstWorkflowExecVtctl instead.
 func tstWorkflowExec(t *testing.T, cells, workflow, sourceKs, targetKs, tables, action, tabletTypes,
-	sourceShards, targetShards string, options *workflowExecOptions) error {
-
+	sourceShards, targetShards string, options *workflowExecOptions,
+) error {
 	var args []string
 	if currentWorkflowType == binlogdatapb.VReplicationWorkflowType_MoveTables {
 		args = append(args, "MoveTables")
@@ -184,8 +184,8 @@ func tstWorkflowExec(t *testing.T, cells, workflow, sourceKs, targetKs, tables, 
 // vtctlclient. It should operate exactly the same way as tstWorkflowExec, but
 // using the legacy client.
 func tstWorkflowExecVtctl(t *testing.T, cells, workflow, sourceKs, targetKs, tables, action, tabletTypes,
-	sourceShards, targetShards string, options *workflowExecOptions) error {
-
+	sourceShards, targetShards string, options *workflowExecOptions,
+) error {
 	var args []string
 	if currentWorkflowType == binlogdatapb.VReplicationWorkflowType_MoveTables {
 		args = append(args, "MoveTables")
@@ -935,14 +935,14 @@ func moveCustomerTableSwitchFlows(t *testing.T, cells []*Cell, sourceCellOrAlias
 	setupCustomerKeyspace(t)
 	workflowType := "MoveTables"
 
-	var moveTablesAndWait = func() {
+	moveTablesAndWait := func() {
 		moveTablesAction(t, "Create", sourceCellOrAlias, workflow, sourceKs, targetKs, tables)
 		catchup(t, targetTab1, workflow, workflowType)
 		catchup(t, targetTab2, workflow, workflowType)
 		vdiffSideBySide(t, ksWorkflow, "")
 	}
 	allCellNames := getCellNames(cells)
-	var switchReadsFollowedBySwitchWrites = func() {
+	switchReadsFollowedBySwitchWrites := func() {
 		moveTablesAndWait()
 
 		validateReadsRouteToSource(t, "replica")
@@ -955,7 +955,7 @@ func moveCustomerTableSwitchFlows(t *testing.T, cells []*Cell, sourceCellOrAlias
 
 		revert(t, workflowType)
 	}
-	var switchWritesFollowedBySwitchReads = func() {
+	switchWritesFollowedBySwitchReads := func() {
 		moveTablesAndWait()
 
 		validateWritesRouteToSource(t)
@@ -969,7 +969,7 @@ func moveCustomerTableSwitchFlows(t *testing.T, cells []*Cell, sourceCellOrAlias
 		revert(t, workflowType)
 	}
 
-	var switchReadsReverseSwitchWritesSwitchReads = func() {
+	switchReadsReverseSwitchWritesSwitchReads := func() {
 		moveTablesAndWait()
 
 		validateReadsRouteToSource(t, "replica")
@@ -992,7 +992,7 @@ func moveCustomerTableSwitchFlows(t *testing.T, cells []*Cell, sourceCellOrAlias
 		revert(t, workflowType)
 	}
 
-	var switchWritesReverseSwitchReadsSwitchWrites = func() {
+	switchWritesReverseSwitchReadsSwitchWrites := func() {
 		moveTablesAndWait()
 
 		validateWritesRouteToSource(t)
@@ -1011,7 +1011,6 @@ func moveCustomerTableSwitchFlows(t *testing.T, cells []*Cell, sourceCellOrAlias
 		validateWritesRouteToTarget(t)
 
 		revert(t, workflowType)
-
 	}
 	switchReadsFollowedBySwitchWrites()
 	switchWritesFollowedBySwitchReads()

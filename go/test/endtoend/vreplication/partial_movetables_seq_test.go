@@ -253,7 +253,6 @@ func (wf *workflow) create() {
 		i += 100
 	}
 	doVtctldclientVDiff(t, wf.toKeyspace, wf.name, cell, nil)
-
 }
 
 func (wf *workflow) switchTraffic() {
@@ -271,7 +270,6 @@ func (wf *workflow) complete() {
 // TestPartialMoveTablesWithSequences enhances TestPartialMoveTables by adding an unsharded keyspace which has a
 // sequence. This tests that the sequence is migrated correctly and that we can reverse traffic back to the source
 func TestPartialMoveTablesWithSequences(t *testing.T) {
-
 	origExtraVTGateArgs := extraVTGateArgs
 
 	extraVTGateArgs = append(extraVTGateArgs, []string{
@@ -357,7 +355,6 @@ func TestPartialMoveTablesWithSequences(t *testing.T) {
 	vtgateConn, closeConn = getVTGateConn()
 	defer closeConn()
 	t.Run("Confirm routing rules", func(t *testing.T) {
-
 		// Global routing rules should be in place with everything going to the source keyspace (customer).
 		confirmGlobalRoutingToSource(t)
 
@@ -410,7 +407,6 @@ func TestPartialMoveTablesWithSequences(t *testing.T) {
 	defer vtgateConn.Close()
 
 	t.Run("Validate shard and tablet type routing", func(t *testing.T) {
-
 		// No shard targeting
 		_, err = vtgateConn.ExecuteFetch(shard80DashRoutedQuery, 0, false)
 		require.Error(t, err)
@@ -524,10 +520,12 @@ func TestPartialMoveTablesWithSequences(t *testing.T) {
 	})
 }
 
-var customerCount int64
-var currentCustomerCount int64
-var newCustomerCount = int64(201)
-var lastCustomerId int64
+var (
+	customerCount        int64
+	currentCustomerCount int64
+	newCustomerCount     = int64(201)
+	lastCustomerId       int64
+)
 
 func getCustomerCount(t *testing.T, msg string) int64 {
 	vtgateConn, closeConn := getVTGateConn()

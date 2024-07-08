@@ -215,7 +215,6 @@ func TestPrimaryRestartSetsPTSTimestamp(t *testing.T) {
 	require.NoError(t, err)
 	err = primaryTablet.VttabletProcess.WaitForTabletStatus("SERVING")
 	require.NoError(t, err)
-
 }
 
 func checkHealth(t *testing.T, port int, shouldError bool) {

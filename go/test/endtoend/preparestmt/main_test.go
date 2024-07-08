@@ -225,7 +225,6 @@ func TestMain(m *testing.M) {
 	} else {
 		os.Exit(exitcode)
 	}
-
 }
 
 // ConnectionString generates the connection string using dbinfo.

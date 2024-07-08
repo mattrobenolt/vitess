@@ -38,14 +38,12 @@ import (
 	"vitess.io/vitess/go/vt/mysqlctl"
 )
 
-var (
-	vtInsertTest = `
+var vtInsertTest = `
 		create table if not exists vt_insert_test (
 		id bigint auto_increment,
 		msg varchar(64),
 		primary key (id)
 		) Engine=InnoDB;`
-)
 
 func TestTabletInitialBackup(t *testing.T) {
 	// Test Initial Backup Flow
@@ -172,7 +170,7 @@ func firstBackupTest(t *testing.T, tabletType string) {
 	restore(t, replica2, "replica", "SERVING")
 	// Replica2 takes time to serve. Sleeping for 5 sec.
 	time.Sleep(5 * time.Second)
-	//check the new replica has the data
+	// check the new replica has the data
 	cluster.VerifyRowsInTablet(t, replica2, keyspaceName, 2)
 
 	removeBackups(t)
@@ -425,7 +423,7 @@ func waitForReplicationToCatchup(tablets []cluster.Vttablet) bool {
 		case <-timeout:
 			return false
 		default:
-			var replicaCount = 0
+			replicaCount := 0
 			for _, tablet := range tablets {
 				status := tablet.VttabletProcess.GetStatusDetails()
 				json.Unmarshal([]byte(status), &statuslst)

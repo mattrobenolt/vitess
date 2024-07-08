@@ -226,10 +226,10 @@ func TestSeq(t *testing.T) {
 	require.Nil(t, err)
 	defer conn.Close()
 
-	//Initialize seq table
+	// Initialize seq table
 	utils.Exec(t, conn, "insert into sequence_test_seq(id, next_id, cache) values(0,1,10)")
 
-	//Insert 4 values in the main table
+	// Insert 4 values in the main table
 	utils.Exec(t, conn, "insert into sequence_test(val) values('a'), ('b') ,('c'), ('d')")
 
 	// Test select calls to main table and verify expected id.

@@ -153,7 +153,7 @@ func TestSecureTransport(t *testing.T) {
 	require.NoError(t, err)
 
 	// Apply schema
-	var vtctlApplySchemaArgs = append(vtctlClientTmArgs, "ApplySchema", "--", "--sql", createVtInsertTest, "test_keyspace")
+	vtctlApplySchemaArgs := append(vtctlClientTmArgs, "ApplySchema", "--", "--sql", createVtInsertTest, "test_keyspace")
 	err = clusterInstance.VtctlProcess.ExecuteCommand(vtctlApplySchemaArgs...)
 	require.NoError(t, err)
 
@@ -315,7 +315,7 @@ func clusterSetUp(t *testing.T) (int, error) {
 	// create all certs
 	log.Info("Creating certificates")
 	certDirectory = path.Join(clusterInstance.TmpDirectory, "certs")
-	_ = encryption.CreateDirectory(certDirectory, 0700)
+	_ = encryption.CreateDirectory(certDirectory, 0o700)
 
 	err := encryption.ExecuteVttlstestCommand("--root", certDirectory, "CreateCA")
 	require.NoError(t, err)
@@ -428,27 +428,33 @@ func createSignedCert(ca string, serial string, name string, commonName string) 
 }
 
 func serverExtraArguments(name string, ca string) []string {
-	args := []string{"--grpc_cert", certDirectory + "/" + name + "-cert.pem",
+	args := []string{
+		"--grpc_cert", certDirectory + "/" + name + "-cert.pem",
 		"--grpc_key", certDirectory + "/" + name + "-key.pem",
-		"--grpc_ca", certDirectory + "/" + ca + "-cert.pem"}
+		"--grpc_ca", certDirectory + "/" + ca + "-cert.pem",
+	}
 	return args
 }
 
 func tmclientExtraArgs(name string) []string {
 	ca := "vttablet-server"
-	var args = []string{"--tablet_manager_grpc_cert", certDirectory + "/" + name + "-cert.pem",
+	args := []string{
+		"--tablet_manager_grpc_cert", certDirectory + "/" + name + "-cert.pem",
 		"--tablet_manager_grpc_key", certDirectory + "/" + name + "-key.pem",
 		"--tablet_manager_grpc_ca", certDirectory + "/" + ca + "-cert.pem",
-		"--tablet_manager_grpc_server_name", "vttablet server instance"}
+		"--tablet_manager_grpc_server_name", "vttablet server instance",
+	}
 	return args
 }
 
 func tabletConnExtraArgs(name string) []string {
 	ca := "vttablet-server"
-	args := []string{"--tablet_grpc_cert", certDirectory + "/" + name + "-cert.pem",
+	args := []string{
+		"--tablet_grpc_cert", certDirectory + "/" + name + "-cert.pem",
 		"--tablet_grpc_key", certDirectory + "/" + name + "-key.pem",
 		"--tablet_grpc_ca", certDirectory + "/" + ca + "-cert.pem",
-		"--tablet_grpc_server_name", "vttablet server instance"}
+		"--tablet_grpc_server_name", "vttablet server instance",
+	}
 	return args
 }
 

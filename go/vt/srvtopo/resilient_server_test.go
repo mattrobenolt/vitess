@@ -711,7 +711,7 @@ func TestSrvKeyspaceWatcher(t *testing.T) {
 
 	waitForEntries := func(entryCount int) []watched {
 		var current []watched
-		var expire = time.Now().Add(5 * time.Second)
+		expire := time.Now().Add(5 * time.Second)
 
 		for time.Now().Before(expire) {
 			current = allSeen()

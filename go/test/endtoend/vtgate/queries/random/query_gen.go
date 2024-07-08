@@ -68,10 +68,12 @@ type (
 	}
 )
 
-var _ sqlparser.ExprGenerator = (*tableT)(nil)
-var _ sqlparser.ExprGenerator = (*column)(nil)
-var _ sqlparser.QueryGenerator = (*selectGenerator)(nil)
-var _ sqlparser.QueryGenerator = (*queryGenerator)(nil)
+var (
+	_ sqlparser.ExprGenerator  = (*tableT)(nil)
+	_ sqlparser.ExprGenerator  = (*column)(nil)
+	_ sqlparser.QueryGenerator = (*selectGenerator)(nil)
+	_ sqlparser.QueryGenerator = (*queryGenerator)(nil)
+)
 
 func newQueryGenerator(genConfig sqlparser.ExprGeneratorConfig, maxTables, maxAggrs, maxGBs int, schemaTables []tableT) *queryGenerator {
 	return &queryGenerator{

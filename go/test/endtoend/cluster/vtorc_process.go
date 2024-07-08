@@ -83,10 +83,9 @@ func (config *VTOrcConfiguration) AddDefaults(webPort int) {
 
 // Setup starts orc process with required arguements
 func (orc *VTOrcProcess) Setup() (err error) {
-
 	// create the configuration file
 	timeNow := time.Now().UnixNano()
-	err = os.MkdirAll(orc.LogDir, 0755)
+	err = os.MkdirAll(orc.LogDir, 0o755)
 	if err != nil {
 		log.Errorf("cannot create log directory for vtorc: %v", err)
 		return err

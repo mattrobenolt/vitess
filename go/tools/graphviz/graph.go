@@ -55,6 +55,7 @@ func escape(s string) string {
 func (n *Node) AddAttribute(s string) {
 	n.attrs = append(n.attrs, escape(s))
 }
+
 func (n *Node) AddTooltip(s string) {
 	n.tooltip = escape(s)
 }
@@ -72,7 +73,6 @@ node [shape=record, fontsize=10]
 			} else {
 				labels += "|" + attr
 			}
-
 		}
 		labels += "}"
 		if node.tooltip != "" {
@@ -144,7 +144,6 @@ const htmlTemplate = `
 `
 
 func (g *Graph) Render() error {
-
 	dot := g.produceDot()
 
 	browsers := func() []string {

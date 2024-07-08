@@ -41,8 +41,10 @@ import (
 	cmp "vitess.io/vitess/go/test/utils"
 )
 
-var testMessage = "{\"message\": \"hello world\"}"
-var testShardedMessagef = "{\"message\": \"hello world\", \"id\": %d}"
+var (
+	testMessage         = "{\"message\": \"hello world\"}"
+	testShardedMessagef = "{\"message\": \"hello world\", \"id\": %d}"
+)
 
 var createMessage = `
 create table vitess_message(

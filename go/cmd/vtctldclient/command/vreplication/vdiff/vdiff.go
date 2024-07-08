@@ -294,7 +294,6 @@ func commandCreate(cmd *cobra.Command, args []string) error {
 		MaxReportSampleRows:         createOptions.MaxReportSampleRows,
 		MaxDiffDuration:             protoutil.DurationToProto(createOptions.MaxDiffDuration),
 	})
-
 	if err != nil {
 		return err
 	}
@@ -701,7 +700,6 @@ func buildSingleSummary(keyspace, workflow, uuid string, resp *vtctldatapb.VDiff
 							TableName: table,
 							State:     vdiff.UnknownState,
 						}
-
 					}
 					ts := tableSummaryMap[table]
 					// This is the shard level VDiff table state.
@@ -832,7 +830,6 @@ func commandShow(cmd *cobra.Command, args []string) error {
 		TargetKeyspace: common.BaseOptions.TargetKeyspace,
 		Arg:            showOptions.Arg,
 	})
-
 	if err != nil {
 		return err
 	}

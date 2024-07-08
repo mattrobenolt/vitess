@@ -306,7 +306,8 @@ func PrsAvoid(t *testing.T, clusterInstance *cluster.LocalProcessCluster, tab *c
 func PrsWithTimeout(t *testing.T, clusterInstance *cluster.LocalProcessCluster, tab *cluster.Vttablet, avoid bool, actionTimeout, waitTimeout string) (string, error) {
 	args := []string{
 		"PlannedReparentShard",
-		fmt.Sprintf("%s/%s", KeyspaceName, ShardName)}
+		fmt.Sprintf("%s/%s", KeyspaceName, ShardName),
+	}
 	if actionTimeout != "" {
 		args = append(args, "--action_timeout", actionTimeout)
 	}

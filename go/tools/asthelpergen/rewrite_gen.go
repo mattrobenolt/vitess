@@ -228,6 +228,7 @@ func setupCursor() []jen.Code {
 		jen.Id("a.cur.node = node"),
 	}
 }
+
 func (r *rewriteGen) executePre(t types.Type) jen.Code {
 	curStmts := setupCursor()
 	if r.exprInterface != nil && types.Implements(t, r.exprInterface) {
@@ -270,7 +271,6 @@ func (r *rewriteGen) basicMethod(t types.Type, _ *types.Basic, spi generatorSPI)
 }
 
 func (r *rewriteGen) rewriteFunc(t types.Type, stmts []jen.Code) {
-
 	/*
 		func (a *application) rewriteNodeType(parent AST, node NodeType, replacer replacerFunc) {
 	*/
@@ -348,7 +348,6 @@ func (r *rewriteGen) rewriteChild(t, field types.Type, fieldName string, param j
 			Add(replace).
 			Op("=").
 			Id("newNode").Assert(jen.Id(types.TypeString(field, noQualifier)))
-
 	}
 	funcBlock := jen.Func().Call(jen.Id("newNode, parent").Id(r.ifaceName)).
 		Block(replaceOrFail)

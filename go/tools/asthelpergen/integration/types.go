@@ -52,7 +52,7 @@ func (r *RefContainer) String() string {
 	if r == nil {
 		return "nil"
 	}
-	var astType = ""
+	astType := ""
 	if r.ASTType == nil {
 		astType = "nil"
 	} else {

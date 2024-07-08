@@ -174,7 +174,8 @@ func runVStream(t *testing.T, ctx context.Context, ch chan *binlogdatapb.VEvent,
 		ShardGtids: []*binlogdatapb.ShardGtid{
 			{Keyspace: keyspaceName, Shard: "-80", Gtid: "current"},
 			{Keyspace: keyspaceName, Shard: "80-", Gtid: "current"},
-		}}
+		},
+	}
 	filter := &binlogdatapb.Filter{
 		Rules: []*binlogdatapb.Rule{{
 			Match: "/.*/",

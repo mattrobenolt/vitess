@@ -175,6 +175,7 @@ func getSidecarDBDDLQueryCount(tablet *cluster.VttabletProcess) (int64, error) {
 	}
 	return int64(val.(float64)), nil
 }
+
 func TestReplicationRepairAfterPrimaryTabletChange(t *testing.T) {
 	ctx := context.Background()
 	// Check that initially replication is setup correctly on the replica tablet

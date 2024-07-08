@@ -171,7 +171,8 @@ func NewCountersWithMultiLabels(name, help string, labels []string) *CountersWit
 	t := &CountersWithMultiLabels{
 		counters: counters{
 			counts: make(map[string]int64),
-			help:   help},
+			help:   help,
+		},
 		labels:         labels,
 		combinedLabels: make([]bool, len(labels)),
 	}
@@ -362,7 +363,8 @@ func NewGaugesWithMultiLabels(name, help string, labels []string) *GaugesWithMul
 				help:   help,
 			},
 			labels: labels,
-		}}
+		},
+	}
 	if name != "" {
 		publish(name, t)
 	}
@@ -410,7 +412,8 @@ func NewGaugesFuncWithMultiLabels(name, help string, labels []string, f func() m
 			f:      f,
 			help:   help,
 			labels: labels,
-		}}
+		},
+	}
 
 	if name != "" {
 		publish(name, t)

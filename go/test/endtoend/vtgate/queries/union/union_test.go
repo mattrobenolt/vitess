@@ -81,7 +81,6 @@ func TestUnionDistinct(t *testing.T) {
 				mcmp.Exec(`select curdate() from t1 union select id1 from t1`)
 			}
 		})
-
 	}
 }
 
@@ -124,7 +123,6 @@ func TestUnionAll(t *testing.T) {
 			mcmp.AssertMatchesNoOrder("select id1, id2 from t1 where id1 = 1 union all select id3,id4 from t2 where id3 = 3 union all select id1, id2 from t1 where id1 = 2 union all select id3,id4 from t2 where id3 = 4",
 				"[[INT64(1) INT64(1)] [INT64(2) INT64(2)] [INT64(3) INT64(3)] [INT64(4) INT64(4)]]")
 		})
-
 	}
 }
 

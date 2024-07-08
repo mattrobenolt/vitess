@@ -141,7 +141,7 @@ func createVttablets(clusterInstance *cluster.LocalProcessCluster, cellInfos []*
 	if err != nil {
 		return err
 	}
-	//Start MySql
+	// Start MySql
 	var mysqlCtlProcessList []*exec.Cmd
 	for _, tablet := range shard0.Vttablets {
 		log.Infof("Starting MySql for tablet %v", tablet.Alias)
@@ -376,7 +376,7 @@ func CheckPrimaryTablet(t *testing.T, clusterInfo *VTOrcClusterInfo, tablet *clu
 	for {
 		now := time.Now()
 		if now.Sub(start) > time.Second*60 {
-			//log.Exitf("error")
+			// log.Exitf("error")
 			assert.FailNow(t, "failed to elect primary before timeout")
 		}
 		tabletInfo, err := clusterInfo.ClusterInstance.VtctldClientProcess.GetTablet(tablet.Alias)
@@ -592,7 +592,7 @@ func RunSQL(t *testing.T, sql string, tablet *cluster.Vttablet, db string) (*sql
 func RunSQLs(t *testing.T, sqls []string, tablet *cluster.Vttablet, db string) error {
 	// Get Connection
 	tabletParams := getMysqlConnParam(tablet, db)
-	var timeoutDuration = time.Duration(5 * len(sqls))
+	timeoutDuration := time.Duration(5 * len(sqls))
 	ctx, cancel := context.WithTimeout(context.Background(), timeoutDuration*time.Second)
 	defer cancel()
 	conn, err := mysql.Connect(ctx, &tabletParams)
@@ -615,7 +615,6 @@ func execute(t *testing.T, conn *mysql.Conn, query string) (*sqltypes.Result, er
 
 // StartVttablet is used to start a vttablet from the given cell and type
 func StartVttablet(t *testing.T, clusterInfo *VTOrcClusterInfo, cell string, isRdonly bool) *cluster.Vttablet {
-
 	var tablet *cluster.Vttablet
 	for _, cellInfo := range clusterInfo.CellInfos {
 		if cellInfo.CellName == cell {
@@ -820,7 +819,7 @@ func SetupNewClusterSemiSync(t *testing.T) *VTOrcClusterInfo {
 	err = clusterInstance.SetupCluster(keyspace, []cluster.Shard{*shard})
 	require.NoError(t, err, "Cannot launch cluster: %v", err)
 
-	//Start MySql
+	// Start MySql
 	var mysqlCtlProcessList []*exec.Cmd
 	for _, shard := range clusterInstance.Keyspaces[0].Shards {
 		for _, tablet := range shard.Vttablets {
@@ -895,7 +894,7 @@ func AddSemiSyncKeyspace(t *testing.T, clusterInfo *VTOrcClusterInfo) {
 	err := clusterInfo.ClusterInstance.SetupCluster(keyspace, []cluster.Shard{*shard})
 	require.NoError(t, err, "Cannot launch cluster: %v", err)
 
-	//Start MySql
+	// Start MySql
 	var mysqlCtlProcessList []*exec.Cmd
 	for _, shard := range clusterInfo.ClusterInstance.Keyspaces[1].Shards {
 		for _, tablet := range shard.Vttablets {
@@ -1126,7 +1125,7 @@ func WaitForTabletType(t *testing.T, tablet *cluster.Vttablet, expectedTabletTyp
 // It expects to find minimum occurrence or exact count of `keyName` provided.
 func WaitForInstancePollSecondsExceededCount(t *testing.T, vtorcInstance *cluster.VTOrcProcess, keyName string, minCountExpected float64, enforceEquality bool) {
 	t.Helper()
-	var sinceInSeconds = 30
+	sinceInSeconds := 30
 	duration := time.Duration(sinceInSeconds)
 	time.Sleep(duration * time.Second)
 

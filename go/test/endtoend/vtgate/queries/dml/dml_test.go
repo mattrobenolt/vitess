@@ -128,7 +128,6 @@ func TestDeleteWithLimit(t *testing.T) {
 
 	qr = mcmp.Exec(`delete from order_tbl limit 5`)
 	require.EqualValues(t, 0, qr.RowsAffected)
-
 }
 
 // TestUpdateWithLimit executed update queries with limit
@@ -186,7 +185,6 @@ func TestUpdateWithLimit(t *testing.T) {
 
 	qr = mcmp.Exec(`update order_tbl set oid = 44 where region_id > 100 limit 2`)
 	require.EqualValues(t, 0, qr.RowsAffected)
-
 }
 
 // TestMultiTableUpdate executed multi-table update queries

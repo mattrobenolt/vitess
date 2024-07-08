@@ -53,7 +53,8 @@ type MysqlctlProcess struct {
 
 // InitDb executes mysqlctl command to add cell info
 func (mysqlctl *MysqlctlProcess) InitDb() (err error) {
-	args := []string{"--log_dir", mysqlctl.LogDirectory,
+	args := []string{
+		"--log_dir", mysqlctl.LogDirectory,
 		"--tablet_uid", fmt.Sprintf("%d", mysqlctl.TabletUID),
 		"--mysql_port", fmt.Sprintf("%d", mysqlctl.MySQLPort),
 		"init",
@@ -113,7 +114,7 @@ func (mysqlctl *MysqlctlProcess) startProcess(init bool) (*exec.Cmd, error) {
 		if mysqlctl.SecureTransport {
 			// Set up EXTRA_MY_CNF for ssl
 			sslPath := path.Join(os.Getenv("VTDATAROOT"), fmt.Sprintf("/ssl_%010d", mysqlctl.TabletUID))
-			os.MkdirAll(sslPath, 0755)
+			os.MkdirAll(sslPath, 0o755)
 
 			// create certificates
 			clientServerKeyPair := tlstest.CreateClientServerCertPairs(sslPath)

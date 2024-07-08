@@ -557,7 +557,6 @@ func GenerateSizeHelpers(packagePatterns []string, typePatterns []string) (map[s
 	loaded, err := packages.Load(&packages.Config{
 		Mode: packages.NeedName | packages.NeedTypes | packages.NeedTypesSizes | packages.NeedTypesInfo | packages.NeedDeps | packages.NeedImports | packages.NeedModule,
 	}, packagePatterns...)
-
 	if err != nil {
 		return nil, err
 	}

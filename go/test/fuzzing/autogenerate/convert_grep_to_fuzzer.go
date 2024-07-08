@@ -249,7 +249,7 @@ func getGrepData() ([]string, []string) {
 			// get import path and short name
 			importPath := pathToImportPath[thePath]
 			shortName := importPathShort[importPath]
-			//fmt.Println(createHarness(shortName, structName))
+			// fmt.Println(createHarness(shortName, structName))
 
 			// create harness
 			harness := createHarness(shortName, structName)

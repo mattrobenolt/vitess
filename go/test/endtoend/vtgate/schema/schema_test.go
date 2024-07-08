@@ -65,7 +65,7 @@ func TestMain(m *testing.M) {
 		defer clusterInstance.Teardown()
 
 		if _, err := os.Stat(schemaChangeDirectory); os.IsNotExist(err) {
-			_ = os.Mkdir(schemaChangeDirectory, 0700)
+			_ = os.Mkdir(schemaChangeDirectory, 0o700)
 		}
 
 		clusterInstance.VtctldExtraArgs = []string{
@@ -97,7 +97,6 @@ func TestMain(m *testing.M) {
 	} else {
 		os.Exit(exitcode)
 	}
-
 }
 
 func TestSchemaChange(t *testing.T) {
@@ -118,7 +117,7 @@ func TestSchemaChange(t *testing.T) {
 
 func testWithInitialSchema(t *testing.T) {
 	// Create 4 tables
-	var sqlQuery = "" // nolint
+	sqlQuery := "" // nolint
 	for i := 0; i < totalTableCount; i++ {
 		sqlQuery = fmt.Sprintf(createTable, fmt.Sprintf("vt_select_test_%02d", i))
 		err := clusterInstance.VtctldClientProcess.ApplySchema(keyspaceName, sqlQuery)
@@ -165,10 +164,10 @@ func testWithDropCreateSchema(t *testing.T) {
 
 // testWithAutoSchemaFromChangeDir on putting sql file to schema change directory, it should apply that sql to all shards
 func testWithAutoSchemaFromChangeDir(t *testing.T) {
-	_ = os.Mkdir(path.Join(schemaChangeDirectory, keyspaceName), 0700)
-	_ = os.Mkdir(path.Join(schemaChangeDirectory, keyspaceName, "input"), 0700)
+	_ = os.Mkdir(path.Join(schemaChangeDirectory, keyspaceName), 0o700)
+	_ = os.Mkdir(path.Join(schemaChangeDirectory, keyspaceName, "input"), 0o700)
 	sqlFile := path.Join(schemaChangeDirectory, keyspaceName, "input/create_test_table_x.sql")
-	err := os.WriteFile(sqlFile, []byte("create table test_table_x (id int)"), 0644)
+	err := os.WriteFile(sqlFile, []byte("create table test_table_x (id int)"), 0o644)
 	require.Nil(t, err)
 	timeout := time.Now().Add(10 * time.Second)
 	matchFoundAfterAutoSchemaApply := false

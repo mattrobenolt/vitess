@@ -41,9 +41,7 @@ const (
 	vdiffRetryInterval       = 5 * time.Second
 )
 
-var (
-	runVDiffsSideBySide = true
-)
+var runVDiffsSideBySide = true
 
 func vdiff(t *testing.T, keyspace, workflow, cells string, vtctlclient, vtctldclient bool, wantV2Result *expectedVDiff2Result) {
 	if vtctlclient {

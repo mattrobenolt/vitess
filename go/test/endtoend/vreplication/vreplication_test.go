@@ -514,7 +514,8 @@ func testVStreamCellFlag(t *testing.T) {
 			Keyspace: "product",
 			Shard:    "0",
 			Gtid:     "",
-		}}}
+		}},
+	}
 	filter := &binlogdatapb.Filter{
 		Rules: []*binlogdatapb.Rule{{
 			Match:  "product",
@@ -778,8 +779,10 @@ func shardCustomer(t *testing.T, testReverse bool, cells []*Cell, sourceCellOrAl
 			// Confirm that the backticking of table names in the routing rules works.
 			tbls := []string{"Lead", "Lead-1"}
 			for _, tbl := range tbls {
-				output, err := osExec(t, "mysql", []string{"-u", "vtdba", "-P", fmt.Sprintf("%d", vc.ClusterConfig.vtgateMySQLPort),
-					"--host=127.0.0.1", "--default-character-set=utf8mb4", "-e", fmt.Sprintf("select * from `%s`", tbl)})
+				output, err := osExec(t, "mysql", []string{
+					"-u", "vtdba", "-P", fmt.Sprintf("%d", vc.ClusterConfig.vtgateMySQLPort),
+					"--host=127.0.0.1", "--default-character-set=utf8mb4", "-e", fmt.Sprintf("select * from `%s`", tbl),
+				})
 				if err != nil {
 					require.FailNow(t, output)
 				}
@@ -1013,7 +1016,8 @@ func reshardCustomer3to1Merge(t *testing.T) { // to unsharded
 
 func reshard(t *testing.T, ksName string, tableName string, workflow string, sourceShards string, targetShards string,
 	tabletIDBase int, counts map[string]int, dryRunResultSwitchReads, dryRunResultSwitchWrites []string, cells []*Cell, sourceCellOrAlias string,
-	autoIncrementStep int) {
+	autoIncrementStep int,
+) {
 	t.Run("reshard", func(t *testing.T) {
 		defaultCell := vc.Cells[vc.CellNames[0]]
 		if cells == nil {
@@ -1108,7 +1112,6 @@ func checkThatVDiffFails(t *testing.T, keyspace, workflow string) {
 		output, err := vc.VtctlClient.ExecuteCommandWithOutput("VDiff", "--", ksWorkflow)
 		require.Error(t, err)
 		require.Contains(t, output, "invalid VDiff run")
-
 	})
 }
 
@@ -1140,8 +1143,10 @@ func shardMerchant(t *testing.T) {
 		printRoutingRules(t, vc, "After merchant movetables")
 
 		// confirm that the backticking of keyspaces in the routing rules works
-		output, err := osExec(t, "mysql", []string{"-u", "vtdba", "-P", fmt.Sprintf("%d", vc.ClusterConfig.vtgateMySQLPort),
-			fmt.Sprintf("--host=%s", vc.ClusterConfig.hostname), "--default-character-set=utf8mb4", "-e", "select * from merchant"})
+		output, err := osExec(t, "mysql", []string{
+			"-u", "vtdba", "-P", fmt.Sprintf("%d", vc.ClusterConfig.vtgateMySQLPort),
+			fmt.Sprintf("--host=%s", vc.ClusterConfig.hostname), "--default-character-set=utf8mb4", "-e", "select * from merchant",
+		})
 		if err != nil {
 			require.FailNow(t, output)
 		}
@@ -1447,6 +1452,7 @@ func moveTablesAction(t *testing.T, action, cell, workflow, sourceKs, targetKs, 
 		t.Fatalf("MoveTables %s command failed with %+v\n", action, err)
 	}
 }
+
 func moveTablesActionWithTabletTypes(t *testing.T, action, cell, workflow, sourceKs, targetKs, tables string, tabletTypes string, ignoreErrors bool) {
 	if err := vc.VtctldClient.ExecuteCommand("MoveTables", "--workflow="+workflow, "--target-keyspace="+targetKs, action,
 		"--source-keyspace="+sourceKs, "--tables="+tables, "--cells="+cell, "--tablet-types="+tabletTypes); err != nil {

@@ -83,7 +83,6 @@ func TestRecoverAll(t *testing.T) {
 
 	defer func() {
 		err := recover()
-
 		if err != nil {
 			t.Errorf("RecoverAll() didn't absorb all panics")
 		}

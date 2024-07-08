@@ -51,8 +51,8 @@ type VtctldProcess struct {
 
 // Setup starts vtctld process with required arguements
 func (vtctld *VtctldProcess) Setup(cell string, extraArgs ...string) (err error) {
-	_ = createDirectory(vtctld.LogDir, 0700)
-	_ = createDirectory(path.Join(vtctld.Directory, "backups"), 0700)
+	_ = createDirectory(vtctld.LogDir, 0o700)
+	_ = createDirectory(path.Join(vtctld.Directory, "backups"), 0o700)
 	vtctld.proc = exec.Command(
 		vtctld.Binary,
 		"--topo_implementation", vtctld.CommonArg.TopoImplementation,
@@ -79,7 +79,7 @@ func (vtctld *VtctldProcess) Setup(cell string, extraArgs ...string) (err error)
 	}
 	vtctld.proc.Args = append(vtctld.proc.Args, extraArgs...)
 
-	err = os.MkdirAll(vtctld.LogDir, 0755)
+	err = os.MkdirAll(vtctld.LogDir, 0o755)
 	if err != nil {
 		log.Errorf("cannot create log directory for vtctld: %v", err)
 		return err

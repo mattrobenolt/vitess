@@ -213,7 +213,6 @@ func (vw *VSchemaWrapper) TargetDestination(qualifier string) (key.Destination, 
 		return nil, nil, 0, vterrors.VT05003(keyspaceName)
 	}
 	return vw.Dest, keyspace.Keyspace, vw.TabletType_, nil
-
 }
 
 func (vw *VSchemaWrapper) TabletType() topodatapb.TabletType {
@@ -317,7 +316,6 @@ func (vw *VSchemaWrapper) TargetString() string {
 }
 
 func (vw *VSchemaWrapper) WarnUnshardedOnly(_ string, _ ...any) {
-
 }
 
 func (vw *VSchemaWrapper) ErrorIfShardedF(keyspace *vindexes.Keyspace, _, errFmt string, params ...any) error {

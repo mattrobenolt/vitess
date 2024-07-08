@@ -68,7 +68,8 @@ func testVStreamWithFailover(t *testing.T, failover bool) {
 			Keyspace: "product",
 			Shard:    "0",
 			Gtid:     "",
-		}}}
+		}},
+	}
 
 	filter := &binlogdatapb.Filter{
 		Rules: []*binlogdatapb.Rule{{
@@ -176,6 +177,7 @@ const schemaUnsharded = `
 create table customer_seq(id int, next_id bigint, cache bigint, primary key(id)) comment 'vitess_sequence';
 insert into customer_seq(id, next_id, cache) values(0, 1, 3);
 `
+
 const vschemaUnsharded = `
 {
   "tables": {
@@ -185,9 +187,11 @@ const vschemaUnsharded = `
   }
 }
 `
+
 const schemaSharded = `
 create table customer(cid int, name varbinary(128), primary key(cid)) TABLESPACE innodb_system CHARSET=utf8mb4;
 `
+
 const vschemaSharded = `
 {
   "sharded": true,
@@ -268,7 +272,8 @@ func testVStreamStopOnReshardFlag(t *testing.T, stopOnReshard bool, baseTabletID
 		ShardGtids: []*binlogdatapb.ShardGtid{{
 			Keyspace: "sharded",
 			Gtid:     "current",
-		}}}
+		}},
+	}
 
 	filter := &binlogdatapb.Filter{
 		Rules: []*binlogdatapb.Rule{{
@@ -406,7 +411,8 @@ func testVStreamCopyMultiKeyspaceReshard(t *testing.T, baseTabletID int) numEven
 	vgtid := &binlogdatapb.VGtid{
 		ShardGtids: []*binlogdatapb.ShardGtid{{
 			Keyspace: "/.*",
-		}}}
+		}},
+	}
 
 	filter := &binlogdatapb.Filter{
 		Rules: []*binlogdatapb.Rule{{
@@ -590,7 +596,8 @@ func TestMultiVStreamsKeyspaceReshard(t *testing.T) {
 	vgtid := &binlogdatapb.VGtid{
 		ShardGtids: []*binlogdatapb.ShardGtid{{
 			Keyspace: "/.*", // Match all keyspaces just to be more realistic.
-		}}}
+		}},
+	}
 
 	filter := &binlogdatapb.Filter{
 		Rules: []*binlogdatapb.Rule{{

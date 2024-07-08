@@ -81,7 +81,8 @@ func (vtctl *VtctlProcess) ExecuteCommandWithOutput(args ...string) (result stri
 		"--log_dir", vtctl.LogDir,
 		"--topo_implementation", vtctl.TopoImplementation,
 		"--topo_global_server_address", vtctl.TopoGlobalAddress,
-		"--topo_global_root", vtctl.TopoGlobalRoot}, args...)
+		"--topo_global_root", vtctl.TopoGlobalRoot,
+	}, args...)
 	if *isCoverage {
 		args = append([]string{"--test.coverprofile=" + getCoveragePath("vtctl-o-"+args[0]+".out"), "--test.v"}, args...)
 	}
@@ -99,7 +100,8 @@ func (vtctl *VtctlProcess) ExecuteCommand(args ...string) (err error) {
 	args = append([]string{
 		"--topo_implementation", vtctl.TopoImplementation,
 		"--topo_global_server_address", vtctl.TopoGlobalAddress,
-		"--topo_global_root", vtctl.TopoGlobalRoot}, args...)
+		"--topo_global_root", vtctl.TopoGlobalRoot,
+	}, args...)
 	if *isCoverage {
 		args = append([]string{"--test.coverprofile=" + getCoveragePath("vtctl-"+args[0]+".out"), "--test.v"}, args...)
 	}
@@ -115,7 +117,6 @@ func (vtctl *VtctlProcess) ExecuteCommand(args ...string) (err error) {
 // configured with the given Config.
 // The process must be manually started by calling setup()
 func VtctlProcessInstance(topoPort int, hostname string) *VtctlProcess {
-
 	// Default values for etcd2 topo server.
 	topoImplementation := "etcd2"
 	topoRootPath := "/"

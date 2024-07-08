@@ -24,12 +24,12 @@ import (
 )
 
 func TestTypeSizes(t *testing.T) {
-	var PtrSize = hack.RuntimeAllocSize(8)
-	var SliceHeaderSize = hack.RuntimeAllocSize(3 * PtrSize)
-	var FatPointerSize = hack.RuntimeAllocSize(2 * PtrSize)
-	var BucketHeaderSize = hack.RuntimeAllocSize(8)
-	var BucketSize = hack.RuntimeAllocSize(8)
-	var HashMapHeaderSize = hack.RuntimeAllocSize(48)
+	PtrSize := hack.RuntimeAllocSize(8)
+	SliceHeaderSize := hack.RuntimeAllocSize(3 * PtrSize)
+	FatPointerSize := hack.RuntimeAllocSize(2 * PtrSize)
+	BucketHeaderSize := hack.RuntimeAllocSize(8)
+	BucketSize := hack.RuntimeAllocSize(8)
+	HashMapHeaderSize := hack.RuntimeAllocSize(48)
 
 	cases := []struct {
 		obj  cachedObject

@@ -108,6 +108,7 @@ func execQuery(t *testing.T, conn *mysql.Conn, query string) *sqltypes.Result {
 	require.NoError(t, err)
 	return qr
 }
+
 func getConnectionNoError(t *testing.T, hostname string, port int) *mysql.Conn {
 	vtParams := mysql.ConnParams{
 		Host:  hostname,
@@ -935,7 +936,7 @@ func (lg *loadGenerator) waitForCount(want int64) {
 
 // appendToQueryLog is useful when debugging tests.
 func appendToQueryLog(msg string) {
-	file, err := os.OpenFile(queryLog, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(queryLog, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
 	if err != nil {
 		log.Errorf("Error opening query log file: %v", err)
 		return

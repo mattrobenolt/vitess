@@ -54,7 +54,6 @@ func (c *mysqlClientConn) connect(ctx context.Context, cp ConnParams) error {
 		Pass:       cp.Password,
 		UnixSocket: cp.UnixSocket,
 	})
-
 	if err != nil {
 		return err
 	}

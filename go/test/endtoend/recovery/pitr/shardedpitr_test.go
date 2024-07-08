@@ -96,7 +96,8 @@ var (
 		"--degraded_threshold", "5s",
 		"--lock_tables_timeout", "5s",
 		"--watch_replication_stream",
-		"--serving_state_grace_period", "1s"}
+		"--serving_state_grace_period", "1s",
+	}
 
 	defaultTimeout = 30 * time.Second
 	defaultTick    = 1 * time.Second
@@ -434,7 +435,7 @@ func initializeCluster(t *testing.T) {
 	sql, err = utils.GetInitDBSQL(sql, cluster.GetPasswordUpdateSQL(clusterInstance), "")
 	require.NoError(t, err, "expected to load init_db file")
 	initDBFileWithPassword = path.Join(clusterInstance.TmpDirectory, "init_db_with_passwords.sql")
-	err = os.WriteFile(initDBFileWithPassword, []byte(sql), 0660)
+	err = os.WriteFile(initDBFileWithPassword, []byte(sql), 0o660)
 	require.NoError(t, err, "expected to load init_db file")
 
 	// Start MySql

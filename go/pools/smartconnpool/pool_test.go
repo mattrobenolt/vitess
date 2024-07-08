@@ -629,7 +629,7 @@ func TestIdleTimeout(t *testing.T) {
 
 func TestIdleTimeoutCreateFail(t *testing.T) {
 	var state TestState
-	var connector = newConnector(&state)
+	connector := newConnector(&state)
 
 	ctx := context.Background()
 	p := NewPool(&Config[*TestConn]{
@@ -723,8 +723,8 @@ func TestMaxLifetime(t *testing.T) {
 
 func TestExtendedLifetimeTimeout(t *testing.T) {
 	var state TestState
-	var connector = newConnector(&state)
-	var config = &Config[*TestConn]{
+	connector := newConnector(&state)
+	config := &Config[*TestConn]{
 		Capacity:    1,
 		IdleTimeout: time.Second,
 		MaxLifetime: 0,
@@ -779,7 +779,7 @@ func TestCreateFail(t *testing.T) {
 
 func TestCreateFailOnPut(t *testing.T) {
 	var state TestState
-	var connector = newConnector(&state)
+	connector := newConnector(&state)
 
 	ctx := context.Background()
 	p := NewPool(&Config[*TestConn]{

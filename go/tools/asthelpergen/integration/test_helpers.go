@@ -29,6 +29,7 @@ func sliceStringAST(els ...AST) string {
 	}
 	return strings.Join(result, ", ")
 }
+
 func sliceStringLeaf(els ...*Leaf) string {
 	result := make([]string, len(els))
 	for i, el := range els {

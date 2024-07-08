@@ -22,9 +22,7 @@ import (
 	"vitess.io/vitess/go/vt/servenv"
 )
 
-var (
-	openTSDBURI string
-)
+var openTSDBURI string
 
 func registerFlags(fs *pflag.FlagSet) {
 	fs.StringVar(&openTSDBURI, "opentsdb_uri", openTSDBURI, "URI of opentsdb /api/put method")

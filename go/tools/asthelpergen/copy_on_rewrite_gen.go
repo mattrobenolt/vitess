@@ -147,7 +147,6 @@ func ifPreNotNilOrReturnsTrue() *jen.Statement {
 			jen.Id("n"),
 			jen.Id("parent"),
 		))
-
 }
 
 func (c *cowGen) interfaceMethod(t types.Type, iface *types.Interface, spi generatorSPI) error {
@@ -331,7 +330,6 @@ func (c *cowGen) visitStruct(t types.Type, strct *types.Struct, spi generatorSPI
 		} else {
 			cond = cond.Op("||").Add(jen.Id(variable))
 		}
-
 	}
 
 	fieldSetters = append(fieldSetters,

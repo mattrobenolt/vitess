@@ -36,7 +36,6 @@ func TestHistory(t *testing.T) {
 	}
 	for i, record := range records {
 		assert.Equal(t, want[i], record)
-
 	}
 
 	for ; i < 6; i++ {
@@ -50,7 +49,6 @@ func TestHistory(t *testing.T) {
 	}
 	for i, record := range records {
 		assert.Equal(t, want[i], record)
-
 	}
 }
 

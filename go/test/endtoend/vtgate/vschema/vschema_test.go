@@ -93,7 +93,6 @@ func TestMain(m *testing.M) {
 	} else {
 		os.Exit(exitcode)
 	}
-
 }
 
 func TestVSchema(t *testing.T) {
@@ -150,5 +149,4 @@ func TestVSchema(t *testing.T) {
 		`[[INT64(1) VARCHAR("test1")] [INT64(2) VARCHAR("test2")] [INT64(3) VARCHAR("test3")] [INT64(4) VARCHAR("test4")]]`)
 
 	utils.AssertMatches(t, conn, "delete from vt_user", `[]`)
-
 }

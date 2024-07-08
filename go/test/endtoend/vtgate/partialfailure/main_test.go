@@ -64,7 +64,6 @@ func TestMain(m *testing.M) {
 			VSchema:   VSchema,
 		}
 		if err := clusterInstance.StartKeyspace(*keyspace, []string{"-40", "40-80", "80-c0", "c0-"}, 0, false); err != nil {
-
 			return 1
 		}
 
@@ -112,6 +111,7 @@ func testAllModes(t *testing.T, stmts func(conn *mysql.Conn)) {
 		})
 	}
 }
+
 func TestPartialQueryFailureExplicitTx(t *testing.T) {
 	testAllModes(t, func(conn *mysql.Conn) {
 		utils.Exec(t, conn, `begin`)

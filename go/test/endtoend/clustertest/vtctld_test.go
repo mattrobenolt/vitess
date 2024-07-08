@@ -34,14 +34,12 @@ import (
 	"vitess.io/vitess/go/test/endtoend/cluster"
 )
 
-var (
-	oneTableOutput = `+---+
+var oneTableOutput = `+---+
 | a |
 +---+
 | 1 |
 +---+
 `
-)
 
 func TestVtctldProcess(t *testing.T) {
 	defer cluster.PanicHandler(t)

@@ -150,7 +150,6 @@ func (e *Executor) WriteScatterStats(w http.ResponseWriter) {
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 	}
-
 }
 
 const statsHTML = `

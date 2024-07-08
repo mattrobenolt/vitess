@@ -245,10 +245,12 @@ func (vtctlclient *VtctlClientProcess) InitTablet(tablet *Vttablet, cell string,
 	if tablet.Type == "rdonly" {
 		tabletType = "rdonly"
 	}
-	args := []string{"InitTablet", "--", "--hostname", hostname,
+	args := []string{
+		"InitTablet", "--", "--hostname", hostname,
 		"--port", fmt.Sprintf("%d", tablet.HTTPPort), "--allow_update", "--parent",
 		"--keyspace", keyspaceName,
-		"--shard", shardName}
+		"--shard", shardName,
+	}
 	if tablet.MySQLPort > 0 {
 		args = append(args, "--mysql_port", fmt.Sprintf("%d", tablet.MySQLPort))
 	}

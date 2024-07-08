@@ -61,13 +61,13 @@ func (vtbackup *VtbackupProcess) Setup() (err error) {
 		"--topo_global_root", vtbackup.CommonArg.TopoGlobalRoot,
 		"--log_dir", vtbackup.LogDir,
 
-		//initDBfile is required to run vtbackup
+		// initDBfile is required to run vtbackup
 		"--mysql_port", fmt.Sprintf("%d", vtbackup.MysqlPort),
 		"--init_db_sql_file", vtbackup.initDBfile,
 		"--init_keyspace", vtbackup.Keyspace,
 		"--init_shard", vtbackup.Shard,
 
-		//Backup Arguments are not optional
+		// Backup Arguments are not optional
 		"--backup_storage_implementation", "file",
 		"--file_backup_storage_root", path.Join(os.Getenv("VTDATAROOT"), "tmp", "backupstorage"),
 	)
@@ -128,7 +128,8 @@ func (vtbackup *VtbackupProcess) TearDown() error {
 // configured with the given Config.
 // The process must be manually started by calling Setup()
 func VtbackupProcessInstance(tabletUID int, mysqlPort int, newInitDBFile string, keyspace string, shard string,
-	cell string, hostname string, tmpDirectory string, topoPort int, initialBackup bool) *VtbackupProcess {
+	cell string, hostname string, tmpDirectory string, topoPort int, initialBackup bool,
+) *VtbackupProcess {
 	vtctl := VtctlProcessInstance(topoPort, hostname)
 	vtbackup := &VtbackupProcess{
 		Name:          "vtbackup",

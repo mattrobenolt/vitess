@@ -26,16 +26,14 @@ import (
 	"vitess.io/vitess/go/vt/topo/topoproto"
 )
 
-var (
-	// base is the base command for all actions related to Materialize.
-	base = &cobra.Command{
-		Use:                   "Materialize --workflow <workflow> --target-keyspace <keyspace> [command] [command-flags]",
-		Short:                 "Perform commands related to materializing query results from the source keyspace into tables in the target keyspace.",
-		DisableFlagsInUseLine: true,
-		Aliases:               []string{"materialize"},
-		Args:                  cobra.ExactArgs(1),
-	}
-)
+// base is the base command for all actions related to Materialize.
+var base = &cobra.Command{
+	Use:                   "Materialize --workflow <workflow> --target-keyspace <keyspace> [command] [command-flags]",
+	Short:                 "Perform commands related to materializing query results from the source keyspace into tables in the target keyspace.",
+	DisableFlagsInUseLine: true,
+	Aliases:               []string{"materialize"},
+	Args:                  cobra.ExactArgs(1),
+}
 
 func registerCommands(root *cobra.Command) {
 	common.AddCommonFlags(base)

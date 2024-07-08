@@ -321,7 +321,6 @@ func commandGetShardReplication(cmd *cobra.Command, args []string) error {
 	fmt.Printf("%s\n", data)
 
 	return nil
-
 }
 
 var removeShardCellOptions = struct {

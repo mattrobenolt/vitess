@@ -117,7 +117,7 @@ func NewMySQLWithMysqld(port int, hostname, dbName string, schemaSQL ...string) 
 
 func createMySQLDir() (string, error) {
 	mysqlDir := mysqlctl.TabletDir(0)
-	err := os.Mkdir(mysqlDir, 0700)
+	err := os.Mkdir(mysqlDir, 0o700)
 	if err != nil {
 		return "", err
 	}

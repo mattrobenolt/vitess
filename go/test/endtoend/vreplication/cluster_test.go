@@ -56,9 +56,11 @@ var (
 	sidecarDBIdentifier   = sqlparser.String(sqlparser.NewIdentifierCS(sidecarDBName))
 	mainClusterConfig     *ClusterConfig
 	externalClusterConfig *ClusterConfig
-	extraVTGateArgs       = []string{"--tablet_refresh_interval", "10ms", "--enable_buffer", "--buffer_window", loadTestBufferingWindowDuration.String(),
+	extraVTGateArgs       = []string{
+		"--tablet_refresh_interval", "10ms", "--enable_buffer", "--buffer_window", loadTestBufferingWindowDuration.String(),
 		"--buffer_size", "250000", "--buffer_min_time_between_failovers", "1s", "--buffer_max_failover_duration", loadTestBufferingWindowDuration.String(),
-		"--buffer_drain_concurrency", "10"}
+		"--buffer_drain_concurrency", "10",
+	}
 	extraVtctldArgs = []string{"--remote_operation_timeout", "600s", "--topo_etcd_lease_ttl", "120"}
 	// This variable can be used within specific tests to alter vttablet behavior.
 	extraVTTabletArgs = []string{}
@@ -164,7 +166,7 @@ func setTempVtDataRoot() string {
 		vtdataroot = path.Join(originalVtdataroot, fmt.Sprintf("vreple2e_%d", dirSuffix))
 	}
 	if _, err := os.Stat(vtdataroot); os.IsNotExist(err) {
-		os.Mkdir(vtdataroot, 0700)
+		os.Mkdir(vtdataroot, 0o700)
 	}
 	_ = os.Setenv("VTDATAROOT", vtdataroot)
 	fmt.Printf("VTDATAROOT is %s\n", vtdataroot)
@@ -200,7 +202,7 @@ func (vc *VitessCluster) StartVTOrc() error {
 // ./bin, ./sbin, and ./libexec subdirectories of VT_MYSQL_ROOT.
 func setVtMySQLRoot(mysqlRoot string) error {
 	if _, err := os.Stat(mysqlRoot); os.IsNotExist(err) {
-		os.Mkdir(mysqlRoot, 0700)
+		os.Mkdir(mysqlRoot, 0o700)
 	}
 	err := os.Setenv("VT_MYSQL_ROOT", mysqlRoot)
 	if err != nil {
@@ -317,7 +319,7 @@ func getClusterConfig(idx int, dataRootDir string) *ClusterConfig {
 	basePort += idx * 10000
 	etcdPort += idx * 10000
 	if _, err := os.Stat(dataRootDir); os.IsNotExist(err) {
-		os.Mkdir(dataRootDir, 0700)
+		os.Mkdir(dataRootDir, 0o700)
 	}
 
 	return &ClusterConfig{
@@ -458,7 +460,7 @@ func (vc *VitessCluster) CleanupDataroot(t *testing.T, recreate bool) {
 	}
 	require.NoError(t, err)
 	if recreate {
-		err = os.Mkdir(dir, 0700)
+		err = os.Mkdir(dir, 0o700)
 		require.NoError(t, err)
 	}
 }
@@ -763,7 +765,6 @@ func (vc *VitessCluster) DeleteShard(t testing.TB, cellName string, ksName strin
 	if output, err := vc.VtctlClient.ExecuteCommandWithOutput("DeleteShard", "--", "--recursive", "--even_if_serving", ksName+"/"+shardName); err != nil {
 		t.Fatalf("DeleteShard command failed with error %+v and output %s\n", err, output)
 	}
-
 }
 
 // StartVtgate starts a vtgate process

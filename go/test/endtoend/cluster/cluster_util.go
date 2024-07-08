@@ -305,7 +305,6 @@ func NewConnParams(port int, password, socketPath, keyspace string) mysql.ConnPa
 	}
 
 	return cp
-
 }
 
 func filterDoubleDashArgs(args []string, version int) (filtered []string) {
@@ -335,7 +334,7 @@ func WriteDbCredentialToTmp(tmpDir string) string {
         "vt_filtered": ["VtFilteredPass"]
 	}`)
 	dbCredentialFile = path.Join(tmpDir, "db_credentials.json")
-	os.WriteFile(dbCredentialFile, data, 0666)
+	os.WriteFile(dbCredentialFile, data, 0o666)
 	return dbCredentialFile
 }
 

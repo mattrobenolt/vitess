@@ -144,7 +144,7 @@ func TestMain(m *testing.M) {
 		defer clusterInstance.Teardown()
 
 		if _, err := os.Stat(schemaChangeDirectory); os.IsNotExist(err) {
-			_ = os.Mkdir(schemaChangeDirectory, 0700)
+			_ = os.Mkdir(schemaChangeDirectory, 0o700)
 		}
 
 		clusterInstance.VtctldExtraArgs = []string{
@@ -197,7 +197,6 @@ func TestMain(m *testing.M) {
 	} else {
 		os.Exit(exitcode)
 	}
-
 }
 
 func TestSchemaChange(t *testing.T) {
@@ -212,7 +211,6 @@ func TestSchemaChange(t *testing.T) {
 }
 
 func testRevertible(t *testing.T) {
-
 	fkOnlineDDLPossible := false
 	t.Run("check 'rename_table_preserve_foreign_key' variable", func(t *testing.T) {
 		// Online DDL is not possible on vanilla MySQL 8.0 for reasons described in https://vitess.io/blog/2021-06-15-online-ddl-why-no-fk/.
@@ -234,7 +232,7 @@ func testRevertible(t *testing.T) {
 		t.Logf("MySQL support for 'rename_table_preserve_foreign_key': %v", fkOnlineDDLPossible)
 	})
 
-	var testCases = []revertibleTestCase{
+	testCases := []revertibleTestCase{
 		{
 			name:       "identical schemas",
 			fromSchema: `id int primary key, i1 int not null default 0`,
@@ -485,7 +483,6 @@ func testRevertible(t *testing.T) {
 }
 
 func testRevert(t *testing.T) {
-
 	var (
 		partitionedTableName = `part_test`
 		createStatement      = `

@@ -23,16 +23,14 @@ import (
 	"vitess.io/vitess/go/vt/topo/topoproto"
 )
 
-var (
-	// base is the base command for all actions related to MoveTables.
-	base = &cobra.Command{
-		Use:                   "MoveTables --workflow <workflow> --target-keyspace <keyspace> [command] [command-flags]",
-		Short:                 "Perform commands related to moving tables from a source keyspace to a target keyspace.",
-		DisableFlagsInUseLine: true,
-		Aliases:               []string{"movetables"},
-		Args:                  cobra.ExactArgs(1),
-	}
-)
+// base is the base command for all actions related to MoveTables.
+var base = &cobra.Command{
+	Use:                   "MoveTables --workflow <workflow> --target-keyspace <keyspace> [command] [command-flags]",
+	Short:                 "Perform commands related to moving tables from a source keyspace to a target keyspace.",
+	DisableFlagsInUseLine: true,
+	Aliases:               []string{"movetables"},
+	Args:                  cobra.ExactArgs(1),
+}
 
 func registerCommands(root *cobra.Command) {
 	common.AddCommonFlags(base)

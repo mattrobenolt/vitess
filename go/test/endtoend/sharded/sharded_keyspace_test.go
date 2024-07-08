@@ -98,7 +98,6 @@ func TestMain(m *testing.M) {
 	} else {
 		os.Exit(exitcode)
 	}
-
 }
 
 func TestShardedKeyspace(t *testing.T) {
@@ -118,7 +117,7 @@ func TestShardedKeyspace(t *testing.T) {
 
 	// apply the schema on the first shard through vtctl, so all tablets
 	// are the same.
-	//apply the schema on the second shard.
+	// apply the schema on the second shard.
 	_, err = shard1Primary.VttabletProcess.QueryTablet(sqlSchema, keyspaceName, true)
 	require.Nil(t, err)
 
@@ -187,7 +186,6 @@ func reloadSchemas(t *testing.T, aliases ...string) {
 		if err := clusterInstance.VtctldClientProcess.ExecuteCommand("ReloadSchema", alias); err != nil {
 			assert.Fail(t, "Unable to reload schema")
 		}
-
 	}
 }
 

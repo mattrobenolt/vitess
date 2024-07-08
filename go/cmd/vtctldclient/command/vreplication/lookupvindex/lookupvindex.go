@@ -212,7 +212,6 @@ func commandCreate(cmd *cobra.Command, args []string) error {
 		TabletTypes:                createOptions.TabletTypes,
 		TabletSelectionPreference:  tsp,
 	})
-
 	if err != nil {
 		return err
 	}
@@ -237,7 +236,6 @@ func commandExternalize(cmd *cobra.Command, args []string) error {
 		// Where the lookup table and VReplication workflow were created.
 		TableKeyspace: baseOptions.TableKeyspace,
 	})
-
 	if err != nil {
 		return err
 	}

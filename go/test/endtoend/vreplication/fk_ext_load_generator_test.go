@@ -254,7 +254,7 @@ func (lg *SimpleLoadGenerator) Load() error {
 	lg.state = LoadGeneratorStateLoading
 	defer func() { lg.state = LoadGeneratorStateStopped }()
 	log.Infof("Inserting initial FK data")
-	var queries = []string{
+	queries := []string{
 		"insert into parent values(1, 'parent1'), (2, 'parent2');",
 		"insert into child values(1, 1, 'child11'), (2, 1, 'child21'), (3, 2, 'child32');",
 	}

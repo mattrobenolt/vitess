@@ -111,7 +111,6 @@ func TestSetSystemVariable(t *testing.T) {
 }
 
 func TestSetSystemVarWithTxFailure(t *testing.T) {
-
 	conn, err := mysql.Connect(context.Background(), &vtParams)
 	require.NoError(t, err)
 	defer conn.Close()
@@ -139,7 +138,6 @@ func TestSetSystemVarWithTxFailure(t *testing.T) {
 }
 
 func TestSetSystemVarWithConnectionTimeout(t *testing.T) {
-
 	conn, err := mysql.Connect(context.Background(), &vtParams)
 	require.NoError(t, err)
 	defer conn.Close()
@@ -157,7 +155,6 @@ func TestSetSystemVarWithConnectionTimeout(t *testing.T) {
 }
 
 func TestSetSystemVariableAndThenSuccessfulTx(t *testing.T) {
-
 	conn, err := mysql.Connect(context.Background(), &vtParams)
 	require.NoError(t, err)
 	defer conn.Close()
@@ -172,7 +169,6 @@ func TestSetSystemVariableAndThenSuccessfulTx(t *testing.T) {
 }
 
 func TestSetSystemVariableAndThenSuccessfulAutocommitDML(t *testing.T) {
-
 	conn, err := mysql.Connect(context.Background(), &vtParams)
 	require.NoError(t, err)
 	defer conn.Close()
@@ -198,7 +194,6 @@ func TestSetSystemVariableAndThenSuccessfulAutocommitDML(t *testing.T) {
 }
 
 func TestStartTxAndSetSystemVariableAndThenSuccessfulCommit(t *testing.T) {
-
 	conn, err := mysql.Connect(context.Background(), &vtParams)
 	require.NoError(t, err)
 	defer conn.Close()
@@ -242,7 +237,6 @@ func TestSetSystemVarAutocommitWithConnError(t *testing.T) {
 }
 
 func TestSetSystemVarInTxWithConnError(t *testing.T) {
-
 	conn, err := mysql.Connect(context.Background(), &vtParams)
 	require.NoError(t, err)
 	defer conn.Close()
@@ -353,7 +347,6 @@ func TestSysvarSocket(t *testing.T) {
 }
 
 func TestReservedConnInStreaming(t *testing.T) {
-
 	conn, err := mysql.Connect(context.Background(), &vtParams)
 	require.NoError(t, err)
 	defer conn.Close()
@@ -369,7 +362,6 @@ func TestReservedConnInStreaming(t *testing.T) {
 }
 
 func TestUnifiedOlapAndOltp(t *testing.T) {
-
 	conn, err := mysql.Connect(context.Background(), &vtParams)
 	require.NoError(t, err)
 	defer conn.Close()

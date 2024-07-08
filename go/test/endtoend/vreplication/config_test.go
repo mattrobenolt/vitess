@@ -276,7 +276,7 @@ create table nopk (name varchar(128), age int unsigned);
   }
 }
 `
-	//ordersSchema = "create table order_seq(id int, next_id bigint, cache bigint, primary key(id)) comment 'vitess_sequence';"
+	// ordersSchema = "create table order_seq(id int, next_id bigint, cache bigint, primary key(id)) comment 'vitess_sequence';"
 	ordersVSchema = `
 {
   "sharded": true,
