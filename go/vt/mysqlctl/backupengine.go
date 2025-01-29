@@ -31,6 +31,7 @@ import (
 
 	"vitess.io/vitess/go/mysql"
 	"vitess.io/vitess/go/mysql/replication"
+	"vitess.io/vitess/go/vt/log"
 	"vitess.io/vitess/go/vt/logutil"
 	"vitess.io/vitess/go/vt/mysqlctl/backupstats"
 	"vitess.io/vitess/go/vt/mysqlctl/backupstorage"
@@ -435,6 +436,7 @@ func (p *RestorePath) String() string {
 func findLatestSuccessfulBackup(ctx context.Context, logger logutil.Logger, bhs []backupstorage.BackupHandle, excludeBackupName string) (backupstorage.BackupHandle, *BackupManifest, error) {
 	for index := len(bhs) - 1; index >= 0; index-- {
 		bh := bhs[index]
+		logger.Warningf("backup name: %s", bh.Name())
 		if bh.Name() == excludeBackupName {
 			// skip this bh. Use case: in an incremental backup, as we look for previous successful backups,
 			// the new incremental backup handle is partial: the directory exists, it will show in ListBackups, but
@@ -816,6 +818,52 @@ func addDirectory(fes []FileEntry, base string, baseDir string, subDir string) (
 	return fes, size, nil
 }
 
+func addStrippedBinlogDirectory(fes []FileEntry, binLogPath string) ([]FileEntry, int64, error) {
+	binlogsDirectory := filepath.Dir(binLogPath)
+	prefix := filepath.Base(binLogPath) + "."
+	log.Infof("MATT: addStrippedBinlogDirectory start: %v, prefix=%v", binlogsDirectory, prefix)
+	var size int64
+
+	entries, err := os.ReadDir(binlogsDirectory)
+	if err != nil {
+		return nil, 0, err
+	}
+	for _, entry := range entries {
+		fi, err := entry.Info()
+		if err != nil {
+			return nil, 0, err
+		}
+		if fi.IsDir() {
+			continue
+		}
+
+		name, found := strings.CutPrefix(fi.Name(), prefix)
+		if !found {
+			continue
+		}
+		if name == "index" {
+			log.Infof("Ignoring bin-log index: %v", fi.Name())
+			continue
+		}
+
+		log.Infof("Adding bin-log file: %v", name)
+		log.Infof("FileEntry: %v", FileEntry{
+			Base: backupBinlogStrippedDir,
+			Name: name,
+		})
+
+		log.Infof("MATT: addStrippedBinlogDirectory: %v %v %v", binlogsDirectory, name, fi.Size())
+
+		fes = append(fes, FileEntry{
+			Base: backupBinlogStrippedDir,
+			Name: name,
+		})
+		size += fi.Size()
+	}
+
+	return fes, size, nil
+}
+
 // addMySQL8DataDictionary checks to see if the new data dictionary introduced in MySQL 8 exists
 // and adds it to the backup manifest if it does
 // https://dev.mysql.com/doc/refman/8.0/en/data-dictionary-transactional-storage.html
@@ -843,6 +891,7 @@ func hasDynamicRedoLog(cnf *Mycnf) bool {
 }
 
 func findFilesToBackup(cnf *Mycnf) ([]FileEntry, int64, error) {
+	log.Info("MATT: findFilesToBackup")
 	var err error
 	var result []FileEntry
 	var size, totalSize int64
@@ -868,6 +917,14 @@ func findFilesToBackup(cnf *Mycnf) ([]FileEntry, int64, error) {
 		return nil, 0, err
 	}
 	totalSize = totalSize + size
+
+	if builtinBackupIncludeBinLogs {
+		result, size, err = addStrippedBinlogDirectory(result, cnf.BinLogPath)
+		if err != nil {
+			return nil, 0, err
+		}
+		totalSize += size
+	}
 
 	// then add DB directories
 	fis, err := os.ReadDir(cnf.DataDir)

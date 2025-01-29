@@ -47,6 +47,7 @@ vttablet \
  --init_tablet_type $tablet_type \
  --health_check_interval 5s \
  --backup_storage_implementation file \
+ --builtinbackup-include-binlogs=true \
  --file_backup_storage_root $VTDATAROOT/backups \
  --restore_from_backup \
  --port $port \

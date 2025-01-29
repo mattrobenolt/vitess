@@ -57,7 +57,7 @@ vtadmin-api is running!
 "
 
 echo "Building vtadmin-web..."
-source "${web_dir}/build.sh"
+#source "${web_dir}/build.sh"
 
 # Wait for vtadmin to successfully discover the cluster
 expected_cluster_result="{\"result\":{\"clusters\":[{\"id\":\"${cluster_name}\",\"name\":\"${cluster_name}\"}]},\"ok\":true}"

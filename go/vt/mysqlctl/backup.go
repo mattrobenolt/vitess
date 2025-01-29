@@ -49,6 +49,7 @@ const (
 	backupInnodbDataHomeDir     = "InnoDBData"
 	backupInnodbLogGroupHomeDir = "InnoDBLog"
 	backupBinlogDir             = "BinLog"
+	backupBinlogStrippedDir     = "BinLog2"
 	backupData                  = "Data"
 
 	// backupManifestFileName is the MANIFEST file name within a backup.
@@ -478,9 +479,9 @@ func Restore(ctx context.Context, params RestoreParams) (*BackupManifest, error)
 	if err := params.Mysqld.Start(context.Background(), params.Cnf); err != nil {
 		return nil, err
 	}
-	if err = ensureRestoredGTIDPurgedMatchesManifest(ctx, manifest, &params); err != nil {
-		return nil, err
-	}
+	// if err = ensureRestoredGTIDPurgedMatchesManifest(ctx, manifest, &params); err != nil {
+	// 	return nil, err
+	// }
 
 	if handles := restorePath.IncrementalBackupHandles(); len(handles) > 0 {
 		params.Logger.Infof("Restore: applying %v incremental backups", len(handles))

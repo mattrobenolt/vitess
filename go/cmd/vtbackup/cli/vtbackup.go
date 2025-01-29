@@ -886,6 +886,7 @@ func lastCompleteBackup(ctx context.Context, backups []backupstorage.BackupHandl
 		// Check if this backup is complete by looking for the MANIFEST file,
 		// which is written at the end after all files are uploaded.
 		backup := backups[i]
+		log.Warningf("MATT: found backup: %v", backup.Name())
 		if err := checkBackupComplete(ctx, backup); err != nil {
 			log.Warningf("Ignoring backup %v because it's incomplete: %v", backup.Name(), err)
 			continue

@@ -29,6 +29,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"sync/atomic"
 	"time"
@@ -87,6 +88,8 @@ var (
 	// The path should exist.
 	// When empty, the default OS temp dir is assumed.
 	builtinIncrementalRestorePath = ""
+
+	builtinBackupIncludeBinLogs = false
 )
 
 // BuiltinBackupEngine encapsulates the logic of the builtin engine
@@ -171,6 +174,7 @@ func registerBuiltinBackupEngineFlags(fs *pflag.FlagSet) {
 	fs.UintVar(&builtinBackupFileReadBufferSize, "builtinbackup-file-read-buffer-size", builtinBackupFileReadBufferSize, "read files using an IO buffer of this many bytes. Golang defaults are used when set to 0.")
 	fs.UintVar(&builtinBackupFileWriteBufferSize, "builtinbackup-file-write-buffer-size", builtinBackupFileWriteBufferSize, "write files using an IO buffer of this many bytes. Golang defaults are used when set to 0.")
 	fs.StringVar(&builtinIncrementalRestorePath, "builtinbackup-incremental-restore-path", builtinIncrementalRestorePath, "the directory where incremental restore files, namely binlog files, are extracted to. In k8s environments, this should be set to a directory that is shared between the vttablet and mysqld pods. The path should exist. When empty, the default OS temp dir is assumed.")
+	fs.BoolVar(&builtinBackupIncludeBinLogs, "builtinbackup-include-binlogs", builtinBackupIncludeBinLogs, "include bin-logs with a full backup")
 }
 
 // fullPath returns the full path of the entry, based on its type
@@ -186,6 +190,8 @@ func (fe *FileEntry) fullPath(cnf *Mycnf) (string, error) {
 		root = cnf.DataDir
 	case backupBinlogDir:
 		root = filepath.Dir(cnf.BinLogPath)
+	case backupBinlogStrippedDir:
+		return path.Join(fe.ParentPath, cnf.BinLogPath+"."+fe.Name), nil
 	default:
 		return "", vterrors.Errorf(vtrpc.Code_UNKNOWN, "unknown base: %v", fe.Base)
 	}
@@ -209,7 +215,7 @@ func (fe *FileEntry) open(cnf *Mycnf, readOnly bool) (*os.File, error) {
 		if err := os.MkdirAll(dir, os.ModePerm); err != nil {
 			return nil, vterrors.Wrapf(err, "cannot create destination directory %v", dir)
 		}
-		if fd, err = os.Create(name); err != nil {
+		if fd, err = os.OpenFile(name, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0660); err != nil {
 			return nil, vterrors.Wrapf(err, "cannot create destination file %v", name)
 		}
 	}
@@ -1200,10 +1206,20 @@ func (be *BuiltinBackupEngine) restoreFileEntries(ctx context.Context, fes []Fil
 	g, ctx := errgroup.WithContext(ctx)
 	g.SetLimit(params.Concurrency)
 
+	var binLogs []string
 	for i := range fes {
 		if fes[i].Name == "" {
 			continue
 		}
+
+		if fes[i].Base == backupBinlogStrippedDir {
+			path, err := fes[i].fullPath(params.Cnf)
+			if err != nil {
+				return vterrors.Wrapf(err, "failed to resolve path for %v", fes[i].Name)
+			}
+			binLogs = append(binLogs, path)
+		}
+
 		g.Go(func() error {
 			fe := &fes[i]
 			name := fmt.Sprintf("%v", i)
@@ -1234,6 +1250,32 @@ func (be *BuiltinBackupEngine) restoreFileEntries(ctx context.Context, fes []Fil
 			return nil
 		})
 	}
+
+	if len(binLogs) > 0 {
+		params.Logger.Infof("writing bin-log index file")
+
+		sort.Strings(binLogs)
+		fe := FileEntry{
+			Base: backupBinlogStrippedDir,
+			Name: "index",
+		}
+		dest, err := fe.open(params.Cnf, false)
+		if err != nil {
+			return vterrors.Wrap(err, "can't open bin-log index for writing")
+		}
+
+		for _, path := range binLogs {
+			params.Logger.Infof("adding to bin-log index, %v", path)
+			if _, err := dest.WriteString(path + "\n"); err != nil {
+				return vterrors.Wrap(err, "failed to write bin-log index")
+			}
+		}
+
+		if err := dest.Close(); err != nil {
+			return vterrors.Wrap(err, "failed to close bin-log index")
+		}
+	}
+
 	_ = g.Wait()
 	return bh.Error()
 }

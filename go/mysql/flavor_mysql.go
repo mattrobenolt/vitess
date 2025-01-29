@@ -235,16 +235,16 @@ func (mysqlFlavor) sendBinlogDumpCommand(c *Conn, serverID uint32, binlogFilenam
 // setReplicationPositionCommands is part of the Flavor interface.
 func (mysqlFlavor8) setReplicationPositionCommands(pos replication.Position) []string {
 	return []string{
-		"RESET MASTER", // We must clear gtid_executed before setting gtid_purged.
-		fmt.Sprintf("SET GLOBAL gtid_purged = '%s'", pos),
+		// "RESET MASTER", // We must clear gtid_executed before setting gtid_purged.
+		// fmt.Sprintf("SET GLOBAL gtid_purged = '%s'", pos),
 	}
 }
 
 // setReplicationPositionCommands is part of the Flavor interface.
 func (mysqlFlavor) setReplicationPositionCommands(pos replication.Position) []string {
 	return []string{
-		"RESET BINARY LOGS AND GTIDS", // We must clear gtid_executed before setting gtid_purged.
-		fmt.Sprintf("SET GLOBAL gtid_purged = '%s'", pos),
+		// "RESET BINARY LOGS AND GTIDS", // We must clear gtid_executed before setting gtid_purged.
+		// fmt.Sprintf("SET GLOBAL gtid_purged = '%s'", pos),
 	}
 }
 
